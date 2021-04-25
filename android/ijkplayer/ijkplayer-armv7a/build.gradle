@@ -12,6 +12,11 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
     }
     buildTypes {
+        all {
+            ndk {
+                abiFilters "armeabi-v7a"
+            }
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -21,10 +26,15 @@ android {
         jniLibs.srcDirs 'src/main/libs'
         jni.srcDirs = [] // This prevents the auto generation of Android.mk
     }
+    externalNativeBuild {
+        ndkBuild {
+            path 'src/main/jni/Android.mk'
+        }
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
 
 apply from: new File(rootProject.projectDir, "tools/gradle-on-demand.gradle");
